@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+pandas = "*"
+shapely = "*"
+pyproj = "*"
+requests = "==2.25.1"
+flask-httpauth = "*"
+flask = "*"
+flask-restful = "*"
+marshmallow = "*"
+pytest = "*"
+api = "*"
+flask-limiter = "*"
+polygon = "*"
+pytest-html = "*"
+limiter = "*"
+flask-testing = "*"
+
+[dev-packages]
+pylint = "*"
+
+[requires]
+python_version = "3.8"
+python_full_version = "3.8.16"

@@ -1,0 +1,38 @@
+name: Run Tests and merge to main
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pipenv
+        pipenv install --dev
+
+    - name: Run tests
+      run: |
+        pipenv run pytest
+
+    - name: Create PR
+      if: ${{ success() }}
+      uses: repo-sync/pull-request@v2
+      with:
+        source_branch: "staging"
+        destination_branch: "main"
+        pr_title: "Automated PR: Merge staging to main"
+        pr_body: "This is an automated PR. Please review the changes and merge if appropriate."
+        github_token: ${{ secrets.GITHUB_TOKEN }}
