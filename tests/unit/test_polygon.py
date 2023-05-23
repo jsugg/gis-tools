@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, Mock
 from pytest_html import extras
-from ...polygon.polygon import read_data, write_results, calculate_area, calculate_perimeter
+from polygon.polygon import read_data, write_results, calculate_area, calculate_perimeter
 import pandas as pd
 
 class TestFunctions(unittest.TestCase):
@@ -15,11 +15,15 @@ class TestFunctions(unittest.TestCase):
 #    def test_calculate_area(self):
 #        data = pd.DataFrame({'longitude': [-73.98, -73.99, -73.99, -73.98, -73.98], 'latitude': [40.75, 40.75, 40.74, 40.74, 40.75]})
 #        area = calculate_area(data, "cm")
+#        assert isinstance(area, float)
+#        assert area > 0
 #        self.assertAlmostEqual(area, 0.88, places=2)
 
 #    def test_calculate_perimeter(self):
 #        data = pd.DataFrame({'longitude': [-73.98, -73.99, -73.99, -73.98, -73.98], 'latitude': [40.75, 40.75, 40.74, 40.74, 40.75]})
 #        perimeter = calculate_perimeter(data, "cm")
+#        assert isinstance(perimeter, float)
+#        assert perimeter > 0
 #        self.assertAlmostEqual(perimeter, 3.51, places=2)
 
     @patch('json.dump')
