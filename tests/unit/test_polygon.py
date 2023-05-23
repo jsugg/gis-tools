@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, Mock
 from pytest_html import extras
-from polygon.polygon import read_data, write_results, calculate_area, calculate_perimeter
+from ...polygon.polygon import read_data, write_results, calculate_area, calculate_perimeter
 import pandas as pd
 
 class TestFunctions(unittest.TestCase):
