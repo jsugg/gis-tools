@@ -6,7 +6,7 @@
 
 ## Overview
 
-GIS Tools is a comprehensive library designed to aid engineers and scientists working with Geographic Information Systems (GIS). The library offers a range of functionalities, from polygon calculations to future GIS-related features, all served through a RESTful API.
+GIS Tools is a work in progress for a comprehensive library designed to aid engineers and scientists working with Geographic Information Systems (GIS). The library offers a range of functionalities, from polygon calculations to future GIS-related features, all served through a RESTful API.
 
 ## Features
 
