@@ -1,37 +1,49 @@
+import argparse
 import unittest
-from unittest.mock import patch, Mock
-from pytest_html import extras
-from polygon.polygon import read_data, write_results, calculate_area, calculate_perimeter
+from unittest.mock import patch
+
 import pandas as pd
 
-class TestFunctions(unittest.TestCase):
-#    @patch('requests.get')
-#    def test_read_data_url(self, mock_get):
-#        mock_get.return_value.ok = True
-#        mock_get.return_value.text = 'longitude,latitude\n-73.98,40.75\n-73.99,40.75\n-73.99,40.74\n-73.98,40.74\n-73.98,40.75'
-#        data = read_data(url='http://test.com/test.csv')
-#        self.assertEqual(data.shape, (5, 2))
+from features.polygon_calculation import polygon
 
-#    def test_calculate_area(self):
-#        data = pd.DataFrame({'longitude': [-73.98, -73.99, -73.99, -73.98, -73.98], 'latitude': [40.75, 40.75, 40.74, 40.74, 40.75]})
-#        area = calculate_area(data, "cm")
-#        assert isinstance(area, float)
-#        assert area > 0
-#        self.assertAlmostEqual(area, 0.88, places=2)
 
-#    def test_calculate_perimeter(self):
-#        data = pd.DataFrame({'longitude': [-73.98, -73.99, -73.99, -73.98, -73.98], 'latitude': [40.75, 40.75, 40.74, 40.74, 40.75]})
-#        perimeter = calculate_perimeter(data, "cm")
-#        assert isinstance(perimeter, float)
-#        assert perimeter > 0
-#        self.assertAlmostEqual(perimeter, 3.51, places=2)
+class TestPolygon(unittest.TestCase):
 
-    @patch('json.dump')
-    def test_write_results(self, mock_dump):
-        write_results('1234', '2023-05-19 12:00:00', 'coordenadas.csv', None, 0.88, 3.51, 'km')
-        mock_dump.assert_called()
+    def setUp(self):
+        self.data = pd.DataFrame({
+            'longitude': [0, 1, 1, 0],
+            'latitude': [0, 0, 1, 1]
+        })
+        self.results = {}
+        self.unit = 'km'
 
-    # More tests to come ...
+    @patch('features.polygon_calculation.polygon.read_data')
+    def test_calculate_area(self, mock_read_data):
+        mock_read_data.return_value = self.data
+        expected_area = 1.0  # For the given data
+        actual_area = polygon.calculate_area(self.data, self.unit, self.results)
+        self.assertEqual(expected_area, actual_area)
+
+    @patch('features.polygon_calculation.polygon.read_data')
+    def test_calculate_perimeter(self, mock_read_data):
+        mock_read_data.return_value = self.data
+        expected_perimeter = 4.0  # For the given data
+        actual_perimeter = polygon.calculate_perimeter(self.data, self.unit, self.results)
+        self.assertEqual(expected_perimeter, actual_perimeter)
+
+    @patch('features.polygon_calculation.polygon.read_data')
+    @patch('features.polygon_calculation.polygon.calculate_area')
+    @patch('features.polygon_calculation.polygon.calculate_perimeter')
+    @patch('features.polygon_calculation.polygon.display_and_write_results')
+    def test_main(self, mock_display_and_write_results, mock_calculate_perimeter, mock_calculate_area, mock_read_data):
+        mock_read_data.return_value = self.data
+        mock_calculate_area.return_value = 1.0
+        mock_calculate_perimeter.return_value = 4.0
+
+        with patch('argparse.ArgumentParser.parse_args', return_value=argparse.Namespace(file='some_file.csv', url=None, area=True, perimeter=True, decimal_separator=',', unit='km')):
+            polygon.main()
+
+        mock_display_and_write_results.assert_called_once()
 
 if __name__ == '__main__':
     unittest.main()
