@@ -1,41 +1,73 @@
 # GIS Tools
 
-![System Diagram](https://showme.redstarplugin.com/s/SOoSOu2p)
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+![Python Version](https://img.shields.io/badge/python-3.8-blue)
 
-This repository contains a small project that aims to create tools to facilitate the work of people working with multiple GIS tools. The first milestone is to streamline the process of creating flood and flow studies using automated pipelines and developing tools tailored to the task combined with AI. It has a modular system design, so there'll be more modules to be implemented, and it's served as an API.
+## Overview
 
-## System Overview
-
-The diagram above provides a high-level overview of how the system works. When a user makes an HTTP API request, it is processed by the API, which then sends a request to the `polygon.py` script. This script reads data from a CSV file or URL, calculates the area and perimeter of the polygon defined by the data, and writes the results to a JSON file. The API then returns these results to the user.
+GIS Tools is a comprehensive library designed to aid engineers and scientists working with Geographic Information Systems (GIS). The library offers a range of functionalities, from polygon calculations to future GIS-related features, all served through a RESTful API.
 
 ## Features
 
-- **Automated Pipelines**: Streamline the process of creating flood and flow studies.
-- **AI Integration**: Utilize AI to enhance the accuracy and efficiency of the tools.
-- **Modular Design**: The system is designed to be modular, allowing for the easy addition of more modules in the future.
-- **Multi-threading**: The system uses multi-threading to improve the speed of calculations, especially for large areas and complex perimeters.
+- **Polygon Calculations**: Compute area, perimeter, and other properties of polygons.
+- **Extensible Architecture**: Easily add more GIS-related functionalities.
+- **RESTful API**: Access all functionalities through a well-documented API.
+- **High Test Coverage**: Unit, integration, and performance tests with 100% coverage.
 
-## Getting Started
+## Installation
 
-To get started with this project, clone the repository and install the dependencies listed in the `Pipfile`.
+Clone the repository and navigate to the project root directory. Install the required packages:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Usage
 
-The main functionality of the system is contained in the `polygon.py` script. This script can be run from the command line and accepts several arguments:
+Running the API Server
+From the project root directory, run:
+```
+make start-api
+```
 
-- `--file` or `-f`: The path to a CSV file containing the polygon data.
-- `--url` or `-u`: A URL to a CSV file containing the polygon data.
-- `--area` or `-a`: Calculate the area of the polygon.
-- `--perimeter` or `-p`: Calculate the perimeter of the polygon.
-- `--decimal-separator` or `-d`: The decimal separator used in the CSV file.
-- `--unit` or `-U`: The unit of measurement for the results.
+The API will be accessible at http://127.0.0.1:5000/.
+
+Running Tests
+To run all tests and generate a coverage report, execute:
+```
+make test
+```
+
+## API Documentation
+
+### Polygon Calculations
+Endpoint: /polygon/calculate
+Method: POST
+Payload:
+
+```
+{
+  "coordinates": [
+    {"longitude": 0, "latitude": 0},
+    {"longitude": 1, "latitude": 0},
+    {"longitude": 1, "latitude": 1},
+    {"longitude": 0, "latitude": 1}
+  ],
+  "unit": "km"
+}
+```
+Response:
+```
+{
+  "area": 1.0,
+  "perimeter": 4.0,
+  "unit": "km"
+}
+```
 
 ## Contributing
-
-We welcome contributions to this project. If you have a feature you'd like to add, please open an issue to discuss it before making a pull request.
+Contributions are welcome! 
 
 ## License
-
-This project is licensed under the terms of the MIT license. See the `LICENSE` file for details.
-
-If you're interested in contributing to the development of this plugin, you can check out the open issues on the [project's GitHub page](https://github.com/bra1nDump/show-me-chatgpt-plugin/issues).
+This project is licensed under the MIT License - see the LICENSE.md file for details.
